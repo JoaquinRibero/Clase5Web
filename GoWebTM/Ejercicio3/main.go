@@ -1,6 +1,8 @@
 package main
 
 import (
+	"encoding/json"
+	"os"
 	"time"
 
 	"github.com/gin-gonic/gin"
@@ -16,8 +18,18 @@ type transaction struct {
 	Fecha    time.Time `json:"fecha"`
 }
 
+func GetAll(ctx *gin.Context) {
+	transactions := []transaction{}
+
+	data, _ := os.ReadFile("../transactions.json")
+	json.Unmarshal([]byte(data), &transactions)
+
+	ctx.JSON(200, transactions)
+
+}
+
 func main() {
-	t1 := transaction{
+	/*t1 := transaction{
 		Id:       1,
 		Codigo:   "abc123",
 		Moneda:   "dolar",
@@ -35,14 +47,11 @@ func main() {
 		Receptor: "steve",
 		Fecha:    time.Date(2021, time.December, 22, 0, 0, 0, 0, time.UTC)}
 
-	transactions := []transaction{t1, t2}
+	transactions := []transaction{t1, t2}*/
 
 	router := gin.Default()
 
-	router.GET("/transactions/GetAll", func(ctx *gin.Context) {
-		//u, _ := json.Marshal(transactions)
-		ctx.JSON(200, transactions)
-	})
+	router.GET("/transactions", GetAll)
 	router.Run(":3000")
 
 }

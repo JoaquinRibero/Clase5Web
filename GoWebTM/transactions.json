@@ -9,12 +9,12 @@
         "fecha": "2021-12-21T00:00:00"
     },
     {
-        "_id": 2,
-        "codigo": "transacción 2",
-        "moneda": "dolar",
+        "_id": 1,
+        "codigo": "transacción 1",
+        "moneda": "peso",
         "monto": 1500,
-        "emisor": "pepito",
-        "receptor": "juan",
+        "emisor": "joaquin",
+        "receptor": "bootcamp",
         "fecha": "2021-12-21T00:00:00"
     }
 ]
