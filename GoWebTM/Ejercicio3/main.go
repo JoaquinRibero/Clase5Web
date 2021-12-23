@@ -3,6 +3,7 @@ package main
 import (
 	"encoding/json"
 	"os"
+	"strconv"
 	"time"
 
 	"github.com/gin-gonic/gin"
@@ -19,13 +20,45 @@ type transaction struct {
 }
 
 func GetAll(ctx *gin.Context) {
+
+	params := ctx.Request.URL.Query()
+
 	transactions := []transaction{}
 
 	data, _ := os.ReadFile("../transactions.json")
 	json.Unmarshal([]byte(data), &transactions)
-
-	ctx.JSON(200, transactions)
-
+	final := []transaction{}
+	for _, tx := range final {
+		filter := false
+		if params.Get("codigo") == tx.Codigo {
+			filter = true
+		}
+		id, _ := strconv.Atoi(params.Get("id"))
+		if id == tx.Id {
+			filter = true
+		}
+		if params.Get("moneda") == tx.Moneda {
+			filter = true
+		}
+		if params.Get("emisor") == tx.Emisor {
+			filter = true
+		}
+		if params.Get("receptor") == tx.Receptor {
+			filter = true
+		}
+		monto, _ := strconv.Atoi(params.Get("monto"))
+		if monto == tx.Monto {
+			filter = true
+		}
+		if filter == true {
+			final = append(final, tx)
+		}
+	}
+	if len(final) > 0 {
+		ctx.JSON(200, final)
+	} else {
+		ctx.JSON(200, transactions)
+	}
 }
 
 func main() {
